@@ -1,8 +1,14 @@
 # HoneyNet - API Honeypot & Threat Intelligence Dashboard
 
+![Dashboard Overview](honeypot_dashboard.png)
+
 This is a personal project I built to learn about async Python, WebSockets, and threat intelligence. It's a fully asynchronous Python honeypot that captures attacker activity, enriches the data with GeoIP lookups, saves it to an SQLite database, and streams it all to a dark-theme dashboard in real time. 
 
 I built this phase-by-phase as a portfolio piece to get hands-on experience with FastAPI, SQLAlchemy, and frontend development without frameworks.
+
+### Event Details & Anomaly Detection
+
+![Event Details](event_details.png)
 
 ---
 
