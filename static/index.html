@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HoneyNet — Threat Intelligence Dashboard</title>
+  <meta name="description" content="Real-time API honeypot threat intelligence dashboard. Monitor attacker IPs, attack signatures, and live event feeds." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- ── HEADER ─────────────────────────────────────────────────────────── -->
+  <header class="header" role="banner">
+    <div class="header-brand">
+      <span class="header-icon" aria-hidden="true">[#]</span>
+      <div class="header-titles">
+        <h1 class="header-title">HoneyNet</h1>
+        <span class="header-subtitle">Threat Intelligence Dashboard</span>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <div class="ws-pill" id="wsPill" aria-live="polite">
+        <span class="live-dot" id="liveDot"></span>
+        <span id="wsLabel">Connecting…</span>
+      </div>
+    </div>
+
+    <div class="header-meta">
+      <span class="meta-item">
+        <span class="meta-value" id="headerTotal">0</span>
+        <span class="meta-label">events</span>
+      </span>
+      <span class="meta-sep">·</span>
+      <span class="meta-item">
+        <span class="meta-value" id="headerClients">0</span>
+        <span class="meta-label">clients</span>
+      </span>
+      <span class="meta-sep">·</span>
+      <span class="meta-item">
+        <span class="meta-value" id="headerTime">—</span>
+      </span>
+    </div>
+  </header>
+
+  <!-- ── MAIN ───────────────────────────────────────────────────────────── -->
+  <main class="main" role="main">
+
+    <!-- Stats row -->
+    <section class="stats-row" aria-label="Summary statistics">
+      <div class="stat-card card" id="cardTotal">
+        <div class="stat-icon">&lt;/&gt;</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statTotal">0</div>
+          <div class="stat-label">Total Events</div>
+        </div>
+      </div>
+      <div class="stat-card card" id="card24h">
+        <div class="stat-icon">[T]</div>
+        <div class="stat-body">
+          <div class="stat-value" id="stat24h">0</div>
+          <div class="stat-label">Last 24 Hours</div>
+        </div>
+      </div>
+      <div class="stat-card card" id="card1h">
+        <div class="stat-icon">[*]</div>
+        <div class="stat-body">
+          <div class="stat-value" id="stat1h">0</div>
+          <div class="stat-label">Last Hour</div>
+        </div>
+      </div>
+      <div class="stat-card card" id="cardIPs">
+        <div class="stat-icon">[@]</div>
+        <div class="stat-body">
+          <div class="stat-value" id="statIPs">0</div>
+          <div class="stat-label">Unique Attackers</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Threat level breakdown -->
+    <section class="threat-row" aria-label="Threat level breakdown">
+      <div class="threat-card threat-card--critical card" id="tcCritical">
+        <div class="threat-glow"></div>
+        <div class="threat-label">CRITICAL</div>
+        <div class="threat-value" id="lvlCritical">0</div>
+        <div class="threat-bar-wrap"><div class="threat-bar" id="barCritical"></div></div>
+      </div>
+      <div class="threat-card threat-card--high card" id="tcHigh">
+        <div class="threat-glow"></div>
+        <div class="threat-label">HIGH</div>
+        <div class="threat-value" id="lvlHigh">0</div>
+        <div class="threat-bar-wrap"><div class="threat-bar" id="barHigh"></div></div>
+      </div>
+      <div class="threat-card threat-card--medium card" id="tcMedium">
+        <div class="threat-glow"></div>
+        <div class="threat-label">MEDIUM</div>
+        <div class="threat-value" id="lvlMedium">0</div>
+        <div class="threat-bar-wrap"><div class="threat-bar" id="barMedium"></div></div>
+      </div>
+      <div class="threat-card threat-card--low card" id="tcLow">
+        <div class="threat-glow"></div>
+        <div class="threat-label">LOW</div>
+        <div class="threat-value" id="lvlLow">0</div>
+        <div class="threat-bar-wrap"><div class="threat-bar" id="barLow"></div></div>
+      </div>
+    </section>
+
+    <!-- Main content grid: live feed + sidebar -->
+    <div class="content-grid">
+
+      <!-- ── Live Feed ─────────────────────────────────────────────────── -->
+      <section class="feed-panel card" aria-label="Live event feed">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <span class="panel-title">Live Feed</span>
+            <span class="feed-pulse" id="feedPulse" aria-hidden="true"></span>
+          </div>
+          <div class="panel-header-right" style="display: flex; align-items: center; gap: 12px;">
+            <select id="sortSelect" class="sort-select" style="background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-primary); font-family: var(--font-mono); font-size: 11px; padding: 3px 6px; outline: none; cursor: pointer;">
+              <option value="time_desc">Time (Newest)</option>
+              <option value="time_asc">Time (Oldest)</option>
+              <option value="threat_desc">Threat (High-Low)</option>
+              <option value="threat_asc">Threat (Low-High)</option>
+            </select>
+            <span class="feed-count" id="feedCount">0 events</span>
+          </div>
+        </div>
+        <div class="feed-scroll" id="feedScroll">
+          <table class="feed-table" role="grid" aria-label="Threat events">
+            <thead>
+              <tr>
+                <th scope="col">Time</th>
+                <th scope="col">Location</th>
+                <th scope="col">IP Address</th>
+                <th scope="col">Method</th>
+                <th scope="col">Path</th>
+                <th scope="col">Level</th>
+                <th scope="col">Flags</th>
+              </tr>
+            </thead>
+            <tbody id="feedBody">
+              <!-- JS-generated rows -->
+            </tbody>
+          </table>
+          <div class="feed-empty" id="feedEmpty">
+            <div class="feed-empty-icon">---</div>
+            <div>No events yet — waiting for attackers…</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Sidebar ───────────────────────────────────────────────────── -->
+      <aside class="sidebar" aria-label="Analytics sidebar">
+
+        <div class="sidebar-card card">
+          <div class="panel-header">
+            <span class="panel-title">Top Attackers</span>
+          </div>
+          <div class="bar-list" id="topIPs">
+            <div class="bar-empty">No data yet</div>
+          </div>
+        </div>
+
+        <div class="sidebar-card card">
+          <div class="panel-header">
+            <span class="panel-title">Top Targets</span>
+          </div>
+          <div class="bar-list" id="topPaths">
+            <div class="bar-empty">No data yet</div>
+          </div>
+        </div>
+
+        <div class="sidebar-card card">
+          <div class="panel-header">
+            <span class="panel-title">Top Countries</span>
+          </div>
+          <div class="bar-list" id="topCountries">
+            <div class="bar-empty">No data yet</div>
+          </div>
+        </div>
+
+      </aside>
+    </div><!-- /.content-grid -->
+
+  </main>
+
+  <!-- ── EVENT DETAIL MODAL ─────────────────────────────────────────────── -->
+  <div class="modal" id="eventModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-box card">
+      <div class="modal-header">
+        <span class="panel-title" id="modalTitle">Event Detail</span>
+        <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

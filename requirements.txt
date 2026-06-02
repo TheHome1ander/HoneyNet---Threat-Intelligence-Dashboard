@@ -1,0 +1,17 @@
+# Core Framework
+fastapi==0.115.5
+uvicorn[standard]==0.32.1      # ASGI server with WebSocket support
+
+# Database (async SQLite)
+sqlalchemy==2.0.36             # ORM core with async support
+aiosqlite==0.20.0              # Async SQLite driver for SQLAlchemy
+greenlet>=3.0.0                # Required by SQLAlchemy async on Python 3.14+
+
+# Environment & Config
+python-dotenv==1.0.1           # Load .env files into os.environ
+
+# HTTP Client (for GeoIP lookups in Phase 3)
+httpx==0.28.0                  # Async HTTP client
+
+# Utilities
+python-multipart==0.0.18       # Required for FastAPI form data parsing
