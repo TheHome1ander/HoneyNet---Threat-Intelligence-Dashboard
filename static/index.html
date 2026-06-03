@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HoneyNet — Threat Intelligence Dashboard</title>
+  <title>HoneyNet</title>
   <meta name="description" content="Real-time API honeypot threat intelligence dashboard. Monitor attacker IPs, attack signatures, and live event feeds." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +15,7 @@
   <!-- ── HEADER ─────────────────────────────────────────────────────────── -->
   <header class="header" role="banner">
     <div class="header-brand">
-      <span class="header-icon" aria-hidden="true">[#]</span>
+      <span class="header-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span>
       <div class="header-titles">
         <h1 class="header-title">HoneyNet</h1>
         <span class="header-subtitle">Threat Intelligence Dashboard</span>
@@ -52,28 +52,28 @@
     <!-- Stats row -->
     <section class="stats-row" aria-label="Summary statistics">
       <div class="stat-card card" id="cardTotal">
-        <div class="stat-icon">&lt;/&gt;</div>
+        <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
         <div class="stat-body">
           <div class="stat-value" id="statTotal">0</div>
           <div class="stat-label">Total Events</div>
         </div>
       </div>
       <div class="stat-card card" id="card24h">
-        <div class="stat-icon">[T]</div>
+        <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
         <div class="stat-body">
           <div class="stat-value" id="stat24h">0</div>
           <div class="stat-label">Last 24 Hours</div>
         </div>
       </div>
       <div class="stat-card card" id="card1h">
-        <div class="stat-icon">[*]</div>
+        <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
         <div class="stat-body">
           <div class="stat-value" id="stat1h">0</div>
           <div class="stat-label">Last Hour</div>
         </div>
       </div>
       <div class="stat-card card" id="cardIPs">
-        <div class="stat-icon">[@]</div>
+        <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
         <div class="stat-body">
           <div class="stat-value" id="statIPs">0</div>
           <div class="stat-label">Unique Attackers</div>
