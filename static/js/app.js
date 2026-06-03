@@ -115,8 +115,10 @@ function handleWSMessage(msg) {
 }
 
 function setWSStatus(state, label) {
-  els.wsPill.className  = `ws-pill ${state}`;
-  els.wsLabel.textContent = label;
+  if (els.wsPill && els.wsLabel) {
+    els.wsPill.className  = `ws-pill ${state}`;
+    els.wsLabel.textContent = label;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
